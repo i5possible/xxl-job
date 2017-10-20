@@ -1,0 +1,52 @@
+## xxl-job-admin
+
+### Root WebApplicationContext
+```
+ContextLoader
+XmlWebApplicationContext 
+XmlBeanDefinitionReader applicationcontext-base.xml
+XmlBeanDefinitionReader applicationcontext-xxl-job-admin.xml
+PropertyPlaceholderConfigurer xxl-job-admin.properties
+DefaultListableBeanFactory adminBizImpl,xxlJobServiceImpl,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,freemarkerConfig,propertyConfigurer,dataSource,sqlSessionFactory,org.mybatis.spring.mapper.MapperScannerConfigurer#0,transactionManager,org.springframework.aop.config.internalAutoProxyCreator,org.springframework.transaction.annotation.AnnotationTransactionAttributeSource#0,org.springframework.transaction.interceptor.TransactionInterceptor#0,org.springframework.transaction.config.internalTransactionAdvisor,quartzScheduler,xxlJobDynamicScheduler,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor,xxlJobGroupDao,xxlJobInfoDao,xxlJobLogDao,xxlJobLogGlueDao,xxlJobRegistryDao
+MLog slf4j
+C3P0Registry
+PropertiesFactoryBean freemarker.properties
+FreeMarkerConfigurer 
+
+SchedulerFactoryBean quartz.properties
+StdSchedulerFactory(ThreadExecutor)
+SimpleThreadPool
+SchedulerSignalerImpl
+QuartzScheduler
+c3p0:ComboPooledDataSource
+LocalDataSourceJobStore
+quartzScheduler with instanceId 'LiangHong.local1508226345150
+AdaptableJobFactory
+XxlJobDynamicScheduler:init xxl-job admin success
+DefaultLifecycleProcessor
+SchedulerFactoryBean
+```
+
+### DispatcherServlet springmvc-servlet
+```
+DispatcherServlet
+XmlWebApplicationContext
+XmlBeanDefinitionReader
+DefaultListableBeanFactory mvcContentNegotiationManager,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,indexController,jobApiController,jobCodeController,jobGroupController,jobInfoController,jobLogController,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0,mvcPathMatcher,mvcUrlPathHelper,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.resource.ResourceHttpRequestHandler#1,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#1,org.springframework.web.servlet.resource.ResourceHttpRequestHandler#2,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#2,viewResolver,org.springframework.web.servlet.handler.MappedInterceptor#1,org.springframework.web.servlet.handler.MappedInterceptor#2,exceptionResolver,org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor
+RequestMappingHandlerMapping *
+```
+
+### xxl-job-ececutor-sample-spring
+```
+ContextLoader
+XmlWebApplicationContext
+XmlBeanDefinitionReader:applicationcontext-xxl-job.xml
+PropertyPlaceholderConfigurer:xxl-job-executor.properties
+DefaultListableBeanFactory
+XxlJobExecutor:registJobHandler
+
+Server:jetty-0.2.22
+ServerConnector
+
+ExecutorRegistryThread
+```
