@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxl.job.admin.dao.XxlJobRunLogDao">
+	
+	<resultMap id="XxlJobGroup" type="com.xxl.job.admin.core.model.XxlJobRunLog" >
+		<result column="id" property="id" />
+		<result column="job_group" property="jobGroup" />
+	    <result column="job_id" property="jobId" />
+	    <result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="state" property="state" />
+	</resultMap>
+
+	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobRunLog" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO XXL_JOB_QRTZ_TRIGGER_RUN_LOG (
+			job_group,
+			job_id,
+			start_time,
+			end_time,
+			state
+		) VALUES (
+			#{jobGroup},
+			#{jobId},
+			#{startTime},
+			#{endTime},
+			#{state}
+		);
+	</insert>
+	
+	<delete id="clearRunLog" >
+		delete from XXL_JOB_QRTZ_TRIGGER_RUN_LOG
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="jobGroup gt 0">
+				AND job_group = #{jobGroup}
+			</if>
+			<if test="jobId gt 0">
+				AND job_id = #{jobId}
+			</if>
+			<if test="clearBeforeTime != null">
+				AND trigger_time <![CDATA[ <= ]]> #{clearBeforeTime}
+			</if>
+			<if test="clearBeforeNum gt 0">
+				AND id NOT in(
+					SELECT id FROM(
+						SELECT id FROM XXL_JOB_QRTZ_TRIGGER_RUN_LOG AS t
+						<trim prefix="WHERE" prefixOverrides="AND | OR" >
+							<if test="jobGroup gt 0">
+								AND t.job_group = #{jobGroup}
+							</if>
+							<if test="jobId gt 0">
+								AND t.job_id = #{jobId}
+							</if>
+						</trim>
+						ORDER BY t.start_time desc
+						LIMIT 0, #{clearBeforeNum}
+					) t1
+				)
+			</if>
+		</trim>
+	</delete>
+
+</mapper>

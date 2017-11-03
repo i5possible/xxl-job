@@ -3,17 +3,23 @@ package com.xxl.job.admin.service.impl;
 import com.xxl.job.admin.controller.JobApiController;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobLog;
+import com.xxl.job.admin.core.model.XxlJobRunLog;
 import com.xxl.job.admin.core.schedule.XxlJobDynamicScheduler;
 import com.xxl.job.admin.core.trigger.XxlJobTrigger;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobLogDao;
 import com.xxl.job.admin.dao.XxlJobRegistryDao;
+import com.xxl.job.admin.dao.XxlJobRunLogDao;
 import com.xxl.job.admin.service.XxlJobService;
 import com.xxl.job.core.biz.AdminBiz;
 import com.xxl.job.core.biz.model.HandleCallbackParam;
 import com.xxl.job.core.biz.model.RegistryParam;
 import com.xxl.job.core.biz.model.ReturnT;
+
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +43,8 @@ public class AdminBizImpl implements AdminBiz {
     private XxlJobInfoDao xxlJobInfoDao;
     @Resource
     private XxlJobRegistryDao xxlJobRegistryDao;
+    @Resource
+    private XxlJobRunLogDao xxlJobRunLogDao;
     @Resource
     private XxlJobService xxlJobService;
 
@@ -100,9 +108,26 @@ public class AdminBizImpl implements AdminBiz {
         log.setHandleMsg(handleMsg.toString());
         xxlJobLogDao.updateHandleInfo(log);
 
+        String runMsg = log.getHandleMsg();
+        XxlJobRunLog xxlJobRunLog = new XxlJobRunLog();
+        runLogMsg(runMsg, log, xxlJobRunLog); 
+        
         return ReturnT.SUCCESS;
     }
 
+    public void runLogMsg(String runMsg, XxlJobLog log, XxlJobRunLog xxlJobRunLog){
+
+        if(runMsg != null){
+        	JSONObject jsonObj = JSONObject.fromObject(runMsg);
+        	xxlJobRunLog.setJobGroup(log.getJobGroup());
+        	xxlJobRunLog.setJobId(log.getJobId());
+        	xxlJobRunLog.setState(jsonObj.getString("state"));
+        	xxlJobRunLog.setStartTime(jsonObj.getString("startTime"));
+        	xxlJobRunLog.setEndTime(jsonObj.getString("endTime"));
+        }
+        xxlJobRunLogDao.save(xxlJobRunLog);
+    }
+    
     @Override
     public ReturnT<String> registry(RegistryParam registryParam) {
         int ret = xxlJobRegistryDao.registryUpdate(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
