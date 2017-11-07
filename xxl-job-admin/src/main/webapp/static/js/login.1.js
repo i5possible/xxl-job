@@ -11,8 +11,8 @@ $(function(){
 		errorElement : 'span',  
         errorClass : 'help-block',
         focusInvalid : true,  
-        rules : {  
-        	userName : {  
+        rules : {
+            username : {
         		required : true ,
                 minlength: 5,
                 maxlength: 18
@@ -23,8 +23,8 @@ $(function(){
                 maxlength: 18
             } 
         }, 
-        messages : {  
-        	userName : {  
+        messages : {
+            username : {
                 required :"请输入登录账号."  ,
                 minlength:"登录账号不应低于5位",
                 maxlength:"登录账号不应超过18位"

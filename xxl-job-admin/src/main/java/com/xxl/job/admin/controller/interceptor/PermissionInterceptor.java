@@ -19,9 +19,9 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 	public static final String LOGIN_IDENTITY_KEY = "LOGIN_IDENTITY";
 	public static final String LOGIN_IDENTITY_TOKEN;
     static {
-        String username = PropertiesUtil.getString("xxl.job.login.username");
+        String worknumber = PropertiesUtil.getString("xxl.job.login.workNumber");
         String password = PropertiesUtil.getString("xxl.job.login.password");
-        String temp = username + "_" + password;
+        String temp = worknumber + "_" + password;
         LOGIN_IDENTITY_TOKEN = new BigInteger(1, temp.getBytes()).toString(16);
     }
 	
