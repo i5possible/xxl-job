@@ -24,7 +24,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         String temp = worknumber + "_" + password;
         LOGIN_IDENTITY_TOKEN = new BigInteger(1, temp.getBytes()).toString(16);
     }
-	
+
 	public static boolean login(HttpServletResponse response, boolean ifRemember){
 		CookieUtil.set(response, LOGIN_IDENTITY_KEY, LOGIN_IDENTITY_TOKEN, ifRemember);
 		return true;
@@ -46,14 +46,21 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		if (!(handler instanceof HandlerMethod)) {
 			return super.preHandle(request, response, handler);
 		}
-		
-		if (!ifLogin(request)) {
-			HandlerMethod method = (HandlerMethod)handler;
-			PermessionLimit permission = method.getMethodAnnotation(PermessionLimit.class);
-			if (permission == null || permission.limit()) {
-				response.sendRedirect(request.getContextPath() + "/toLogin");
-				//request.getRequestDispatcher("/toLogin").forward(request, response);
-				return false;
+
+		String path=request.getServletPath();
+
+		if(path.equals("/publicLogin")){
+//			response.sendRedirect(request.getContextPath() + "/");
+			return super.preHandle(request, response, handler);
+		}else{
+			if (!ifLogin(request)) {
+				HandlerMethod method = (HandlerMethod)handler;
+				PermessionLimit permission = method.getMethodAnnotation(PermessionLimit.class);
+				if (permission == null || permission.limit()) {
+					response.sendRedirect(request.getContextPath() + "/toLogin");
+					//request.getRequestDispatcher("/toLogin").forward(request, response);
+					return false;
+				}
 			}
 		}
 		

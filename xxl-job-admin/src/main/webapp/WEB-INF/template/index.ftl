@@ -6,6 +6,22 @@
 	<@netCommon.commonStyle />
 </head>
 <body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if> ">
+<#--<script>-->
+    <#--//获取链接参数-->
+    <#--function GetQueryString(name) {-->
+
+        <#--var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");-->
+
+        <#--var r = window.location.search.substr(1).match(reg);-->
+
+        <#--if (r != null) return unescape(r[2]); return null;-->
+
+    <#--}-->
+
+    <#--var workNumber = GetQueryString("workNumber ");-->
+    <#--console.log(workNumber); //打印结果参数结果-->
+    <#--alert("参数为"+workNumber);-->
+<#--</script>-->
 <div class="wrapper">
 	<!-- header -->
 	<@netCommon.commonHeader />

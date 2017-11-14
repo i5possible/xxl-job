@@ -214,6 +214,12 @@ CREATE TABLE `XXL_JOB_QRTZ_TRIGGER_GROUP` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `xxl_job_kyee_login` (
+ `workNumber` varchar(20) NOT NULL,
+ `KYEE_PASSWORD` varchar(50) NOT NULL,
+ `KYEE_USER` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 INSERT INTO `XXL_JOB_QRTZ_TRIGGER_GROUP` ( `app_name`, `title`, `order`, `address_type`, `address_list`) values ( 'xxl-job-executor-sample', '示例执行器', '1', '0', null);
 
 commit;

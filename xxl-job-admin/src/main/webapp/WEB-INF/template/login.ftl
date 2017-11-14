@@ -15,7 +15,7 @@
 			<div class="login-box-body">
 				<p class="login-box-msg">任务调度中心</p>
 				<div class="form-group has-feedback">
-	            	<input type="text" name="userName" class="form-control" placeholder="请输入登录账号" value="admin" >
+	            	<input type="text" name="workNumber" class="form-control" placeholder="请输入登录账号" value="admin" >
 	            	<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 				</div>
 	          	<div class="form-group has-feedback">
@@ -32,7 +32,7 @@
 		            </div><!-- /.col -->
 		            <div class="col-xs-4">
 						<button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
-					</div>
+                    </div>
 				</div>
 			</div>
 		</form>

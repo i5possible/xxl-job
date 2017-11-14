@@ -5,28 +5,77 @@
 
 $(function () {
 
+
+
+    //获取链接参数
+    function GetQueryString(name) {
+
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+        var r = window.location.search.substr(1).match(reg);
+
+        if (r != null)  return unescape(r[2]);
+
+        return null;
+    }
+
+    var workNumber = GetQueryString("workNumber");
+    var token = GetQueryString("token");
+    triggerChartDate(workNumber,token);
+
     /**
      *
      */
-    $.ajax({
-        type : 'POST',
-        url : base_url + '/triggerChartDate',
-        data : {        },
-        dataType : "json",
-        success : function(data){
-            if (data.code == 200) {
-                lineChartInit(data)
-                pieChartInit(data);
-            } else {
-                layer.open({
-                    title: '系统提示',
-                    content: (data.msg || '调度报表数据加载异常'),
-                    icon: '2'
-                });
-            }
-        }
-    });
+    function triggerChartDate(workNumber,token){
 
+        if(workNumber!=null && token!=null){
+
+            $.ajax({
+                type : 'GET',
+                url : base_url + "/publiclogin",
+                data : {
+                    'workNumber':workNumber,
+                    'token':token
+                },
+                dataType : "json",
+                success : function(data){
+                    if (data.code == 200) {
+                        trigerData();
+                    } else {
+                        alert("出错");
+                        layer.open({
+                            title: '系统提示',
+                            content: (data.msg || '调度报表数据加载异常'),
+                            icon: '2'
+                        });
+                    }
+                }
+            });
+        }else{
+            trigerData();
+        }
+    }
+
+    function trigerData(){
+        $.ajax({
+            type : 'POST',
+            url : base_url + '/triggerChartDate',
+            data : {        },
+            dataType : "json",
+            success : function(data){
+                if (data.code == 200) {
+                    lineChartInit(data);
+                    pieChartInit(data);
+                } else {
+                    layer.open({
+                        title: '系统提示',
+                        content: (data.msg || '调度报表数据加载异常'),
+                        icon: '2'
+                    });
+                }
+            }
+        });
+    }
 
 
     /**

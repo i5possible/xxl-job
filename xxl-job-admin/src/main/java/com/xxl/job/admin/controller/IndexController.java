@@ -2,9 +2,9 @@ package com.xxl.job.admin.controller;
 
 import com.xxl.job.admin.controller.annotation.PermessionLimit;
 import com.xxl.job.admin.controller.interceptor.PermissionInterceptor;
-import com.xxl.job.admin.core.util.PropertiesUtil;
 import com.xxl.job.admin.dao.XxlJobIndexDao;
 import com.xxl.job.admin.service.XxlJobService;
+import com.xxl.job.admin.service.XxlJobUserService;
 import com.xxl.job.core.biz.model.ReturnT;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -29,6 +29,9 @@ public class IndexController {
 	private XxlJobService xxlJobService;
 
 	@Resource
+	private XxlJobUserService xxlJobUserService;
+
+	@Resource
 	private XxlJobIndexDao xxlJobIndexDao;
 
 	@RequestMapping("/")
@@ -42,6 +45,7 @@ public class IndexController {
 
     @RequestMapping("/triggerChartDate")
 	@ResponseBody
+	@PermessionLimit(limit=false)
 	public ReturnT<Map<String, Object>> triggerChartDate() {
         ReturnT<Map<String, Object>> triggerChartDate = xxlJobService.triggerChartDate();
         return triggerChartDate;
@@ -63,6 +67,7 @@ public class IndexController {
 
 		if (!PermissionInterceptor.ifLogin(request)) {
 
+			//通过workNumber查询loginPwd
 			String loginPwd = xxlJobIndexDao.getLoginPwd(workNumber);
 
 			if(loginPwd!=null){
@@ -74,6 +79,7 @@ public class IndexController {
 						ifRem = true;
 					}
 					PermissionInterceptor.login(response, ifRem);
+
 				} else {
 					return new ReturnT<String>(500, "账号或密码错误");
 				}
@@ -84,7 +90,45 @@ public class IndexController {
 		}
 		return ReturnT.SUCCESS;
 	}
-	
+
+
+	/**
+	 * 接入公共服务平台，校验公共服务平台用户信息
+	 * @param workNumber
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping("/publicLogin")
+	public String publicLogin(Model model, String workNumber, String token, HttpServletRequest request, HttpServletResponse response){
+
+			return "index";
+	}
+
+	@RequestMapping(value="publiclogin", method=RequestMethod.GET)
+	@ResponseBody
+	@PermessionLimit(limit=false)
+	public ReturnT<String> publicLogin(String workNumber, String token, HttpServletRequest request, HttpServletResponse response){
+
+		Map<String, Object> validateSso=xxlJobUserService.executeValidateSso(workNumber, token, request);
+
+		boolean flag = (boolean) validateSso.get("flag");
+
+		if(flag){
+
+			String loginPwd = xxlJobIndexDao.getLoginPwd(workNumber);
+
+			if(loginPwd == null){
+				return  new ReturnT<String>(500, "密码为空");
+			}
+
+			PermissionInterceptor.login(response, false);
+			return ReturnT.SUCCESS;
+		}
+		return  new ReturnT<String>(500, "Sorry！您没有权限！");
+	}
+
+
+
 	@RequestMapping(value="logout", method=RequestMethod.POST)
 	@ResponseBody
 	@PermessionLimit(limit=false)
@@ -104,5 +148,5 @@ public class IndexController {
 
 		return "help";
 	}
-	
+
 }
