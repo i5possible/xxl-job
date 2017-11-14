@@ -8,6 +8,7 @@ import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobIndexDao;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobLogDao;
+import com.xxl.job.admin.dao.XxlJobRunLogDao;
 import com.xxl.job.core.biz.ExecutorBiz;
 import com.xxl.job.core.biz.model.LogResult;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -44,6 +45,8 @@ public class JobLogController {
 	public XxlJobInfoDao xxlJobInfoDao;
 	@Resource
 	public XxlJobLogDao xxlJobLogDao;
+	@Resource
+	public XxlJobRunLogDao xxlJobRunLogDao;
 
 
 	@RequestMapping
@@ -203,6 +206,9 @@ public class JobLogController {
 		}
 
 		xxlJobLogDao.clearLog(jobGroup, jobId, clearBeforeTime, clearBeforeNum);
+		
+		xxlJobRunLogDao.clearRunLog(jobGroup, jobId, clearBeforeTime, clearBeforeNum);
+		
 		return ReturnT.SUCCESS;
 	}
 
