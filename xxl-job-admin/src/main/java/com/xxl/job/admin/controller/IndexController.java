@@ -12,10 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.provider.MD5;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -63,17 +66,16 @@ public class IndexController {
 	@RequestMapping(value="login", method=RequestMethod.POST)
 	@ResponseBody
 	@PermessionLimit(limit=false)
-	public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String workNumber, String password, String ifRemember){
+	public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String workNumber, String password, String ifRemember) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
 		if (!PermissionInterceptor.ifLogin(request)) {
 
 			//通过workNumber查询loginPwd
-			String loginPwd = xxlJobIndexDao.getLoginPwd(workNumber);
+			int userCount = (int)xxlJobIndexDao.getuserCount(workNumber,password);
 
-			if(loginPwd!=null){
+			if(userCount > 0){
 
-				if (StringUtils.isNotBlank(workNumber) && StringUtils.isNotBlank(password)
-						&& loginPwd.equals(password)) {
+				if (StringUtils.isNotBlank(workNumber) && StringUtils.isNotBlank(password)) {
 					boolean ifRem = false;
 					if (StringUtils.isNotBlank(ifRemember) && "on".equals(ifRemember)) {
 						ifRem = true;
@@ -84,7 +86,7 @@ public class IndexController {
 					return new ReturnT<String>(500, "账号或密码错误");
 				}
 			}else{
-				return new ReturnT<String>(500, "账号不存在，请输入正确的账号");
+				return new ReturnT<String>(500, "账号或密码错误");
 			}
 
 		}
@@ -101,14 +103,6 @@ public class IndexController {
 	@RequestMapping("/publicLogin")
 	public String publicLogin(Model model, String workNumber, String token, HttpServletRequest request, HttpServletResponse response){
 
-			return "index";
-	}
-
-	@RequestMapping(value="publiclogin", method=RequestMethod.GET)
-	@ResponseBody
-	@PermessionLimit(limit=false)
-	public ReturnT<String> publicLogin(String workNumber, String token, HttpServletRequest request, HttpServletResponse response){
-
 		Map<String, Object> validateSso=xxlJobUserService.executeValidateSso(workNumber, token, request);
 
 		boolean flag = (boolean) validateSso.get("flag");
@@ -118,16 +112,15 @@ public class IndexController {
 			String loginPwd = xxlJobIndexDao.getLoginPwd(workNumber);
 
 			if(loginPwd == null){
-				return  new ReturnT<String>(500, "密码为空");
+				return "500_error";
 			}
-
 			PermissionInterceptor.login(response, false);
-			return ReturnT.SUCCESS;
+			return "index";
+		}else{
+			return "500_error";
 		}
-		return  new ReturnT<String>(500, "Sorry！您没有权限！");
+
 	}
-
-
 
 	@RequestMapping(value="logout", method=RequestMethod.POST)
 	@ResponseBody

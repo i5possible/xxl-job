@@ -31,4 +31,5 @@ public class XxlJobUserServiceImpl implements XxlJobUserService {
         map.put("flag",true);
         return map;
     }
+
 }

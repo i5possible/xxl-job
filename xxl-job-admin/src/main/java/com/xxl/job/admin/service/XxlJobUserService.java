@@ -9,5 +9,4 @@ public interface XxlJobUserService  {
 
     Map<String,Object>  executeValidateSso(String workNumber, String token, HttpServletRequest request);
 
-
 }

@@ -1,10 +1,10 @@
 package com.xxl.job.admin.dao;
 
-import com.xxl.job.admin.core.model.XxlJobIndex;
 import org.apache.ibatis.annotations.Param;
 
 public interface XxlJobIndexDao {
 
-    public String getLoginPwd(@Param("workNumber") String workNumber);
+    public int getuserCount(@Param("workNumber") String workNumber, @Param("passWord") String passWord);
 
+    public String getLoginPwd(@Param("workNumber") String workNumber);
 }
