@@ -5,27 +5,24 @@
 
 $(function () {
 
-    /**
-     *
-     */
-    $.ajax({
-        type : 'POST',
-        url : base_url + '/triggerChartDate',
-        data : {        },
-        dataType : "json",
-        success : function(data){
-            if (data.code == 200) {
-                lineChartInit(data)
-                pieChartInit(data);
-            } else {
-                layer.open({
-                    title: '系统提示',
-                    content: (data.msg || '调度报表数据加载异常'),
-                    icon: '2'
-                });
+        $.ajax({
+            type : 'POST',
+            url : base_url + '/triggerChartDate',
+            data : {        },
+            dataType : "json",
+            success : function(data){
+                if (data.code == 200) {
+                    lineChartInit(data);
+                    pieChartInit(data);
+                } else {
+                    layer.open({
+                        title: '系统提示',
+                        content: (data.msg || '调度报表数据加载异常'),
+                        icon: '2'
+                    });
+                }
             }
-        }
-    });
+        });
 
 
 

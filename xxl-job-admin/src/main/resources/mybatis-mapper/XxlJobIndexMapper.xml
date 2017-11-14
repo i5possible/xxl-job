@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxl.job.admin.dao.XxlJobIndexDao">
+	
+	<resultMap id="XxlJobIndex" type="com.xxl.job.admin.core.model.XxlJobIndex">
+		<result column="workNumber" property="workNumber"/>
+		<result column="KYEE_PASSWORD" property="passWord"/>
+		<result column="KYEE_USER" property="userName"/>
+	</resultMap>
+
+
+	<select id="getuserCount" resultType="int">
+		select count(1) from xxl_job_kyee_login where  workNumber=#{workNumber} and KYEE_PASSWORD=md5(#{passWord})
+	</select>
+
+	<select id="getLoginPwd" resultType="String">
+		select KYEE_PASSWORD from xxl_job_kyee_login where workNumber=#{workNumber}
+	</select>
+
+
+
+</mapper>

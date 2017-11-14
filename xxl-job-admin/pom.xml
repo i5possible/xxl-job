@@ -157,7 +157,22 @@
 			<artifactId>xxl-job-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>com.kyee</groupId>
+            <artifactId>kyee_common_auth</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+		<dependency>
+			<groupId>com.kyee</groupId>
+			<artifactId>kyee_common_auth</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+        <dependency>
+            <groupId>com.quyiyuan.hplus</groupId>
+            <artifactId>qy_tv_wall</artifactId>
+            <version>2.3.20</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 </project>

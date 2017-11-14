@@ -1,5 +1,6 @@
 $(function(){
-	// 复选框
+
+    // 复选框
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
@@ -11,8 +12,8 @@ $(function(){
 		errorElement : 'span',  
         errorClass : 'help-block',
         focusInvalid : true,  
-        rules : {  
-        	userName : {  
+        rules : {
+            workNumber : {
         		required : true ,
                 minlength: 5,
                 maxlength: 18
@@ -23,8 +24,8 @@ $(function(){
                 maxlength: 18
             } 
         }, 
-        messages : {  
-        	userName : {  
+        messages : {
+            workNumber : {
                 required :"请输入登录账号."  ,
                 minlength:"登录账号不应低于5位",
                 maxlength:"登录账号不应超过18位"
